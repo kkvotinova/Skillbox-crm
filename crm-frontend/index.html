@@ -28,6 +28,9 @@
       </div>
       <div class="header__input">
         <input type="text" placeholder="Введите запрос" id="input-text" class="header__input_text">
+        <ul class="header__input_search">
+          <li class="input__search_item not-found">Ничего не найдено</li>
+        </ul>
       </div>
     </div>
   </header>
@@ -36,35 +39,37 @@
     <div class="main__container">
       <h2 class="main__heading">Клиенты</h2>
       <!-- table -->
-      <table class="main__table">
-        <thead class="main__table_thead">
-          <tr class="table__thead_tr">
-            <td class="table__thead_td thead_id active-up">ID</td>
-            <td class="table__thead_td thead_full-name">Фамилия Имя Отчество</td>
-            <td class="table__thead_td thead_create">Дата и время создания</td>
-            <td class="table__thead_td thead_change">Последние изменения</td>
-            <td class="table__thead_td thead_contacts">Контакты</td>
-            <td class="table__thead_td thead_actions">Действия</td>
-          </tr>
-        </thead>
-        <tbody class="main__table_tbody">
-          <div class="table_tbody_back">
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Загрузка...</span>
+      <div class="big-table">
+        <table class="main__table">
+          <thead class="main__table_thead">
+            <tr class="table__thead_tr">
+              <td class="table__thead_td thead_id active-up">ID</td>
+              <td class="table__thead_td thead_full-name">Фамилия Имя Отчество</td>
+              <td class="table__thead_td thead_create">Дата и время создания</td>
+              <td class="table__thead_td thead_change">Последние изменения</td>
+              <td class="table__thead_td thead_contacts">Контакты</td>
+              <td class="table__thead_td thead_actions">Действия</td>
+            </tr>
+          </thead>
+          <tbody class="main__table_tbody">
+            <div class="table_tbody_back">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Загрузка...</span>
+              </div>
             </div>
-          </div>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
       <!-- modal add-->
       <div class="main__btn_container">
-        <button class="main__btn_add" data-bs-toggle="modal" data-bs-target="#addModal">Добавить клиента</button>
+        <button class="main__btn_add">Добавить клиента</button>
       </div>
       <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
         <div class="modal-dialog add">
           <div class="modal__add_content modal-content">
             <div class="modal__add_header">
               <h5 class="header__add_title" id="addModalLabel">Новый клиент</h5>
-              <button type="button" class="header__add_btn btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+              <button type="button" class="header__add_btn btn-close"></button>
             </div>
             <form class="modal__form">
               <div class="modal__add_body">
@@ -110,15 +115,15 @@
             <form class="modal__form">
               <div class="modal__change_body">
                 <div class="form-floating">
-                  <input class="change-input input form-control" placeholder="Фамилия" id="input-sername-2" required>
+                  <input class="change-input input form-control" id="input-sername-2" required placeholder="Фамилия">
                   <label class="change-input-label label" for="input-sername-2">Фамилия<span style="color: #9873FF">*</span></label>
                 </div>
                 <div class="form-floating">
-                  <input class="change-input input form-control" placeholder="Имя" id="input-name-2" required>
+                  <input class="change-input input form-control" id="input-name-2" required placeholder="Имя">
                   <label class="change-input-label label" for="input-name-2">Имя<span style="color: #9873FF">*</span></label>
                 </div>
                 <div class="form-floating">
-                  <input class="change-input input form-control" placeholder="Отчество" id="input-lastname-2">
+                  <input class="change-input input form-control" id="input-lastname-2" placeholder="Отчество">
                   <label class="change-input-label label" for="input-lastname-2">Отчество</label>
                 </div>
               </div>
@@ -134,7 +139,7 @@
                   <span class="spinner-border spinner-change" role="status" aria-hidden="true"></span>
                   Сохранить
                 </button>
-                <button class="footer__btn_cancel footer__btn_cancel_change" data-bs-dismiss="modal">Удалить клиента</button>
+                <button class="footer__btn_cancel footer__btn_cancel_change">Удалить клиента</button>
               </div>
             </form>
           </div>

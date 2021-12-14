@@ -233,7 +233,11 @@
 
             const span = document.createElement('span');
             span.classList.add('td_text');
-            span.textContent = `${date.getHours()}:${date.getMinutes()}`;
+            span.textContent = `${date.getHours()}:`;
+            if (date.getMinutes() < 10) {
+              span.textContent += '0';
+            }
+            span.textContent += date.getMinutes();
             tbodyTd.append(span);
             break;
           case 3:
@@ -251,7 +255,11 @@
 
             const span2 = document.createElement('span');
             span2.classList.add('td_text');
-            span2.textContent = `${date2.getHours()}:${date2.getMinutes()}`;
+            span2.textContent = `${date2.getHours()}:`;
+            if (date2.getMinutes() < 10) {
+              span2.textContent += '0';
+            }
+            span2.textContent += date2.getMinutes();
             tbodyTd.append(span2);
             break;
           case 4:
@@ -295,7 +303,7 @@
             }
             break;
           case 5:
-            // кнопка изменить
+            // ** кнопка изменить
             const btnChange = document.createElement('button');
             btnChange.classList.add('tbody_td_btn', 'btn-change');
               // span - spinner
@@ -321,21 +329,33 @@
 
               const clientId = document.querySelector('.header__change_title_id');
               clientId.textContent = `ID: ${Math.trunc(clientsList[i].id / 10000000)}`;
-              const btnDeleteModal = document.querySelector('.footer__btn_cancel_change');
-              btnDeleteModal.style = 'opacity: 0';
+              // input value == client full name
+              const inputLabel = document.querySelectorAll('.change-input-label');
+              const inputValue = document.querySelectorAll('.change-input');
+              inputValue[0].value = clientsList[i].surname;
+              inputLabel[0].classList.add('focus-label');
+              inputValue[1].value = clientsList[i].name;
+              inputLabel[1].classList.add('focus-label');
+              inputValue[2].value = clientsList[i].lastName;
+              if (clientsList[i].lastName) {
+                inputLabel[2].classList.add('focus-label');
+              } else {
+                inputLabel[2].classList.remove('focus-label');
+              }
+
               // изменить клиента
               const btnChangeModal = document.querySelector('.footer__btn_save_change');
               btnChangeModal.addEventListener('click', async (e) => {
                 // чтобы страница не перезагружалась при отправке формы
                 e.preventDefault();
 
-                const spinner = document.querySelector('.spinner-change');
-                spinner.style.display = 'inline-block';
-                btnChangeModal.classList.add('add-spinner');
-
                 const sername = document.getElementById('input-sername-2');
                 const name = document.getElementById('input-name-2');
                 const lastname = document.getElementById('input-lastname-2');
+
+                sername.addEventListener('input', () => sername.classList.remove('input-error'));
+                name.addEventListener('input', () => name.classList.remove('input-error'));
+                lastname.addEventListener('input', () => lastname.classList.remove('input-error'));
 
                 let isChecked = false;
                 if (sername.value.trim() == '' || sername.value.trim().replace(regExp, '') != '') {
@@ -352,6 +372,10 @@
                 }
                 if (isChecked) return;
 
+                const spinner = document.querySelector('.spinner-change');
+                spinner.style.display = 'inline-block';
+                btnChangeModal.classList.add('add-spinner');
+
                 // создаём список контактов Object({type: , value: })
                 const listTypes = document.querySelectorAll('.filter-option-inner-inner');
                 const listValues = document.querySelectorAll('.select__input');
@@ -364,46 +388,51 @@
                   });
                 }
 
-                await fetch(`${URL}/${clientsList[i].id}`, {
-                  method: 'PATCH',
-                  body: JSON.stringify({
-                    name: name.value.trim(),
-                    surname: sername.value,
-                    lastName: lastname.value.trim(),
-                    contacts: contacts
-                  }
-                  ),
-                  headers: { 'Content-Type': 'application/json' },
-                });
+                setTimeout(async () => {
+                  await fetch(`${URL}/${clientsList[i].id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({
+                      name: name.value.trim(),
+                      surname: sername.value,
+                      lastName: lastname.value.trim(),
+                      contacts: contacts
+                    }
+                    ),
+                    headers: { 'Content-Type': 'application/json' },
+                  });
 
-                // Приводим в начальное состояние (очищаем)
-                clearModal(2);
-                addDynamicsForModalWindow(3);
+                  // Приводим в начальное состояние (очищаем)
+                  spinner.style.display = 'none';
+                  btnChangeModal.classList.remove('add-spinner');
+
+                  clearModal(2);
+                  addDynamicsForModalWindow(3);
+                  modal.hide();
+                  // перерисовываем таблицу
+                  const clientsListNew = await getListOfClients(URL);
+                  clearTable();
+                  drawingTableOfClients(clientsListNew);
+                }, 2000);
+
               });
               // удалить клиента
-              let timeoutID;
-              const dispalyBtn = () => {
-                clearTimeout(timeoutID);
-                timeoutID = setTimeout(() => {
-                  if (clientsList[i].name == name.value && clientsList[i].surname == surname.value) {
-                    btnDeleteModal.style = 'opacity: 1';
-                  }
-                }, 300);
-              };
-              const surname = document.getElementById('input-sername-2');
-              const name = document.getElementById('input-name-2');
-              surname.addEventListener('input', dispalyBtn);
-              name.addEventListener('input', dispalyBtn);
-
-              btnDeleteModal.addEventListener('click', async () => {
+              const btnDeleteModal = document.querySelector('.footer__btn_cancel_change');
+              btnDeleteModal.addEventListener('click', async (e) => {
+                // чтобы страница не перезагружалась при отправке формы
+                e.preventDefault();
                 tbodyTr.remove();
                 await fetch(`${URL}/${clientsList[i].id}`, {
                   method: 'DELETE',
                 });
+                modal.hide();
+                // перерисовываем таблицу
+                const clientsListNew = await getListOfClients(URL);
+                clearTable();
+                drawingTableOfClients(clientsListNew);
               });
             });
 
-            // кнопка удалить
+            // ** кнопка удалить
             const btnDelete = document.createElement('button');
             btnDelete.classList.add('tbody_td_btn', 'btn-delete');
               // spinner
@@ -437,6 +466,11 @@
                 await fetch(`${URL}/${clientsList[i].id}`, {
                   method: 'DELETE',
                 });
+                modal.hide();
+                // перерисовываем таблицу
+                const clientsListNew = await getListOfClients(URL);
+                clearTable();
+                drawingTableOfClients(clientsListNew);
               });
             });
 
@@ -483,6 +517,14 @@
         fourth: 'modal__change_main-btn',
       };
     }
+
+    // labels
+    const labels = document.querySelectorAll('.add-input-label');
+    labels.forEach(label => {
+      if (label.classList.contains('focus-label')) {
+        label.classList.remove('focus-label');
+      }
+    });
 
     let inputs = document.querySelectorAll(`.${listClassNames.first}`);
     inputs.forEach(input => {
@@ -585,17 +627,27 @@
       addDynamicsForModalWindow(i);
     }
 
-    const URLParams = new URLSearchParams(window.location.search);
-    const searchParam = URLParams.get('search');
-    const clientsList = (!searchParam) ? await getListOfClients(URL) : await getListOfClients(`${URL}?search=${searchParam}`);
+    // ? переход на страницу
+    // const URLParams = new URLSearchParams(window.location.search);
+    // const searchParam = URLParams.get('search');
+    // const clientsList = (!searchParam) ? await getListOfClients(URL) : await getListOfClients(`${URL}?search=${searchParam}`);
+    const clientsList = await getListOfClients(URL);
     setTimeout(drawingTableOfClients(clientsList), 2000);
 
     // * модальное окно [Добавить клиента]
+    const modalAdd = new bootstrap.Modal(document.querySelector('#addModal'));
+    // ** кнопка добавить
+    const mainBtnAdd = document.querySelector('.main__btn_add');
+    mainBtnAdd.addEventListener('click', () => modalAdd.show());
+    // ** крестик
+    const btnClose = document.querySelector('.header__add_btn');
+    btnClose.addEventListener('click', () => modalAdd.hide());
     // ** кнопка отмена
     const btnCancelAdd = document.querySelector('.footer__btn_cancel_add');
     btnCancelAdd.addEventListener('click', () => {
       clearModal(1);
       addDynamicsForModalWindow(4);
+      modalAdd.hide();
     });
     // ** кнопка сохранить
     const btnSaveAdd = document.querySelector('.footer__btn_save_add');
@@ -606,6 +658,10 @@
       const sername = document.getElementById('input-sername-1');
       const name = document.getElementById('input-name-1');
       const lastname = document.getElementById('input-lastname-1');
+
+      sername.addEventListener('input', () => sername.classList.remove('input-error'));
+      name.addEventListener('input', () => name.classList.remove('input-error'));
+      lastname.addEventListener('input', () => lastname.classList.remove('input-error'));
 
       let isChecked = false;
       if (sername.value.trim() == '' || sername.value.trim().replace(regExp, '') != '') {
@@ -634,7 +690,7 @@
         });
       }
 
-      const response = await fetch(URL, {
+      await fetch(URL, {
         method: 'POST',
         body: JSON.stringify({
           name: name.value.trim(),
@@ -649,17 +705,127 @@
       // Приводим в начальное состояние (очищаем)
       clearModal(1);
       addDynamicsForModalWindow(4);
+      modalAdd.hide();
+      // перерисовываем таблицу
+      const clientsList = await getListOfClients(URL);
+      clearTable();
+      drawingTableOfClients(clientsList);
     });
 
     // * поиск
     let timeoutID;
     const inputSearch = document.querySelector('.header__input_text');
+    // ** в фокусе
     inputSearch.addEventListener('input', () => {
+      const inputSearchList = document.querySelector('.header__input_search');
+      inputSearchList.style.display = 'block';
       clearTimeout(timeoutID);
       timeoutID = setTimeout(async () => {
-        document.location.assign(`?search=${inputSearch.value}`);
+        const clientsListFiltered = await getListOfClients(`${URL}?search=${inputSearch.value}`);
+        if (clientsListFiltered.length) {
+          let inputSearchItem = document.querySelectorAll('.input__search_item');
+          inputSearchItem.forEach(item => item.remove());
+          if (clientsListFiltered.length < clientsList.length) {
+            clientsListFiltered.forEach(client => {
+              inputSearchItem = document.createElement('li');
+              inputSearchItem.classList.add('input__search_item');
+              inputSearchItem.textContent = client.name + ' ' + client.surname;
+              // *** выделяем клиента
+              inputSearchItem.addEventListener('click', () => {
+                // ? переход на страницу
+                // document.location.assign(`?search=${client.surname}`);
+                const tbodyTr = document.querySelectorAll('.table__tbody_tr');
+                const tbodyTd = document.querySelectorAll('.td_full-name');
+                for (let i = 0; i < tbodyTr.length; i++) {
+                  if (tbodyTd[i].textContent == `${client.surname} ${client.name} ${client.lastName}`) {
+                    tbodyTr[i].style = 'border: 2px solid var(--firm-color)';
+                    tbodyTr[i].addEventListener('click', () => tbodyTr[i].style = 'border: none; border-bottom: 0.5px solid var(--grey-color);');
+                    inputSearch.value = '';
+                    inputSearchList.remove();
+                    const inputList = document.createElement('ul');
+                    inputList.classList.add('header__input_search');
+                    const headerInput = document.querySelector('.header__input');
+                    headerInput.append(inputList);
+                    inputSearchItem = document.createElement('li');
+                    inputSearchItem.classList.add('input__search_item');
+                    inputSearchItem.textContent = 'Ничего не найдено';
+                    inputSearchItem.style = 'cursor: default';
+                    inputList.append(inputSearchItem);
+                    break;
+                  }
+                }
+              });
+              inputSearchList.append(inputSearchItem);
+            });
+            const inputSearchItems = document.querySelectorAll('.input__search_item');
+            let index = 0;
+            document.body.addEventListener('keydown', e => {
+              switch (e.keyCode) {
+                case 13:
+                  const inputClientData = inputSearch.value.split(' ');
+                  const tbodyTr = document.querySelectorAll('.table__tbody_tr');
+                  const tbodyTd = document.querySelectorAll('.td_full-name');
+                  for (let i = 0; i < tbodyTr.length; i++) {
+                    if (tbodyTd[i].textContent.includes(inputClientData[0]) && tbodyTd[i].textContent.includes(inputClientData[1])) {
+                      tbodyTr[i].style = 'border: 2px solid var(--firm-color)';
+                      tbodyTr[i].addEventListener('click', () => tbodyTr[i].style = 'border: none; border-bottom: 0.5px solid var(--grey-color);');
+                      inputSearch.value = '';
+                      inputSearchList.remove();
+                      const inputList = document.createElement('ul');
+                      inputList.classList.add('header__input_search');
+                      const headerInput = document.querySelector('.header__input');
+                      headerInput.append(inputList);
+                      inputSearchItem = document.createElement('li');
+                      inputSearchItem.classList.add('input__search_item');
+                      inputSearchItem.textContent = 'Ничего не найдено';
+                      inputSearchItem.style = 'cursor: default';
+                      inputList.append(inputSearchItem);
+                      break;
+                    }
+                  }
+                  break;
+                case 38:
+                  if (index == 1) break;
+                  --index;
+                  if (index < inputSearchItems.length) {
+                    inputSearchItems[index].style = '';
+                  }
+                  inputSearchItems[index - 1].style = 'background-color: #F5F5F5';
+                  inputSearch.value = inputSearchItems[index - 1].textContent;
+                  break;
+                case 40:
+                  if (index == inputSearchItems.length) break;
+                  if (index) {
+                    inputSearchItems[index - 1].style = '';
+                  }
+                  inputSearchItems[index].style = 'background-color: #F5F5F5';
+                  inputSearch.value = inputSearchItems[index].textContent;
+                  ++index;
+                  break;
+                default:
+                  break;
+              }
+            });
+          } else {
+            inputSearchItem = document.createElement('li');
+            inputSearchItem.classList.add('input__search_item', 'not-found');
+            inputSearchItem.textContent = 'Ничего не найдено';
+            inputSearchList.append(inputSearchItem);
+          }
+        }
       }, 300);
     })
+    // ** не в фокусе
+    inputSearch.addEventListener('blur', () => {
+      const inputSearchList = document.querySelector('.header__input_search');
+      if (inputSearchList) {
+        document.body.addEventListener('click', e => {
+          if (e.target.nodeName != 'LI') {
+            inputSearchList.style.display = 'none';
+          }
+        });
+      }
+    });
 
     // * сортировка
     const theadTd = document.querySelectorAll('.table__thead_td');
@@ -704,7 +870,7 @@
             typeSort[i] = true;
           }
         }
-        const clientsList = (!searchParam) ? await getListOfClients(URL) : await getListOfClients(`${URL}?search=${searchParam}`);
+        const clientsList = await getListOfClients(URL);
         sortTable(i, typeSort[i], clientsList);
       })
     }
