@@ -895,4 +895,32 @@ body {
   .header__logo {
     margin: 0px;
   }
+
+  /** modal */
+  .modal__change_content,
+  .modal__add_content,
+  .modal__delete_content {
+    width: 300px;
+  }
+
+  .modal__add_body,
+  .modal__change_body {
+    margin: 0px 15px 25px;
+  }
+
+  .modal__add_header,
+  .modal__change_header {
+    width: 282px;
+    margin: 3px 3px 0 15px;
+  }
+
+  .modal__change_header {
+    margin-bottom: 15px;
+  }
+
+  .form-floating,
+  .add-input,
+  .change-input  {
+    width: 270px !important;
+  }
 }
