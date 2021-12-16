@@ -263,6 +263,7 @@
             tbodyTd.append(span2);
             break;
           case 4:
+            tbodyTd.classList.add('td_contacts');
             for (let j = 0; j < clientsList[i].contacts.length; j++) {
               const img = document.createElement('img');
               img.classList.add('tbody__td_pic');
@@ -292,9 +293,6 @@
               // костыли
               if (j < 5 && clientsList[i].contacts.length >= 5) {
                 img.classList.add('top-pic');
-                if (j === 4) {
-                  img.classList.add('end-pic');
-                }
               }
               if (j === 4 && !img.classList.contains('last-pic')) {
                 img.classList.add('last-pic');
@@ -303,6 +301,7 @@
             }
             break;
           case 5:
+            tbodyTd.classList.add('td_actions');
             // ** кнопка изменить
             const btnChange = document.createElement('button');
             btnChange.classList.add('tbody_td_btn', 'btn-change');
@@ -828,7 +827,7 @@
     });
 
     // * сортировка
-    const theadTd = document.querySelectorAll('.table__thead_td');
+    const theadTd = document.querySelectorAll('.table__thead_td span');
     let typeSort = [true, false, false, false];
     for (let i = 0; i < 4; i++) {
       theadTd[i].addEventListener('click', async () => {

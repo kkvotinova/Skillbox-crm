@@ -47,7 +47,7 @@ body {
 }
 
 
-/* header */
+/** header */
 .header {
   margin-bottom: 40px;
   height: 90px;
@@ -135,18 +135,17 @@ body {
   cursor: default;
 }
 
-
 .not-found:hover {
   background-color: var(--white-color);
 }
 /* * */
 
-/* main */
+/** main */
 .main__container {
   position: relative;
   margin: 0 auto;
   max-width: 1186px;
-  min-width: 984px;
+  width: 86.8%;
 }
 
 .main__heading {
@@ -157,7 +156,7 @@ body {
   color: var(--black-color);
 }
 
-/* table */
+/** table */
 .main__table {
   margin-bottom: 40px;
   width: 100%;
@@ -173,7 +172,8 @@ body {
   width: 100%;
   height: 300px;
   z-index: -1;
-  background-color: var(--white-color);
+  /* ! background-color: var(--white-color); */
+  background-color: rosybrown;
 }
 
 /** spinner */
@@ -220,10 +220,6 @@ body {
   transition: none;
 }
 
-.thead_actions {
-  width: 209px;
-}
-
 .table__thead_td:hover {
   color: var(--black-color);
 }
@@ -235,34 +231,25 @@ body {
 
 .thead_id {
   padding-left: 20px;
-  width: 102px;
-  background-position: left 32px bottom 10px;
-}
-
-.thead_create,
-.thead_change {
-  max-width: 175px;
-}
-
-.thead_create,
-.thead_change {
-  background-position: right 14px bottom 9px;
 }
 
 /* * arrow */
 .thead_id,
 .thead_create,
 .thead_change {
+  padding-right: 15px;
   background-image: url('../img/svg/arrow/arrow_down-light.svg');
   background-size: 12px;
   background-repeat: no-repeat;
+  background-position: right center;
 }
 
 .thead_full-name {
+  padding-right: 32px;
   background-image: url('../img/svg/arrow/arrow_full_down-light.svg');
   background-size: 29px 14px;
   background-repeat: no-repeat;
-  background-position: left 141px bottom 8px;
+  background-position: right center;
 }
 
 .active-up {
@@ -293,11 +280,6 @@ body {
 }
 
 /* * */
-
-.thead_contacts {
-  width: 158px;
-}
-
 .table__tbody_tr {
   height: 60px;
   background-color: var(--white-color);
@@ -314,7 +296,7 @@ body {
 
 .tbody_id {
   padding-left: 20px;
-  width: 102px;
+  padding-right: 40px;
 }
 
 .td_text {
@@ -322,6 +304,14 @@ body {
   font-size: 12px;
   line-height: 16px;
   color: var(--txt_grey-color);
+}
+
+.td_contacts {
+  width: 160px;
+}
+
+.td_actions {
+  width: 207px;
 }
 
 .tbody_td_btn {
@@ -382,7 +372,7 @@ body {
   background: var(--black-color);
 }
 
-/* modal */
+/** modal */
 .btn-close {
   display: block;
   background-image: url('../img/svg/Union.svg');
@@ -433,7 +423,7 @@ body {
   background-color: #8052FF;
 }
 
-/* modal delete */
+/** modal delete */
 .modal-dialog {
   margin: 15% auto;
 }
@@ -518,7 +508,7 @@ body {
   background: none;
 }
 
-/* modal change */
+/** modal change */
 .modal-dialog.change,
 .modal-dialog.add {
   margin: 10% auto;
@@ -659,7 +649,7 @@ body {
   margin-bottom: 25px;
 }
 
-  /* modal change btn */
+  /** modal change btn */
 .add__form_input {
   margin-bottom: 15px;
   display: flex;
@@ -667,7 +657,7 @@ body {
   align-items: center;
 }
 
-/* select */
+/** select */
 .bootstrap-select,
 .dropdown-toggle {
   width: 123px !important;
@@ -789,7 +779,7 @@ body {
   fill: var(--red-color);
 }
 
-/* modal add */
+/** modal add */
 .modal__add_content {
   min-height: 396px;
 }
@@ -807,62 +797,14 @@ body {
 }
 
 /* ********************************************************************** */
-/** MEDIA 1366 */
-@media (max-width: 1366px) {
-  /** main */
-  .main__container {
-    width: 86.8%;
-  }
-
-  .thead_create,
-  .thead_change {
-    padding-right: 10px;
-    background-position: right 10px bottom 9px;
-  }
-}
-
-/** MEDIA 1305 */
-@media (max-width: 1305px) {
-  .thead_create,
-  .thead_change {
-    background-position: right 5px bottom 9px;
-  }
-}
-
-/** MEDIA 1240 */
-@media (max-width: 1240px) {
-  .thead_create {
-    background-position: right 74px bottom 9px;
-  }
-
-  .thead_change {
-    background-position: right 63px bottom 9px;
-  }
-
-  .table_tbody_back {
-    top: 100px;
-  }
-}
-
-/** MEDIA 1225 */
-@media (max-width: 1225px) {
+/** MEDIA 1259 */
+@media (max-width: 1259px) {
   .table__thead_td {
-    padding-bottom: 0px;
-  }
-
-  .thead_create,
-  .thead_change {
-    padding-right: 0;
-    padding-bottom: 8px;
-    background-position: right 65px bottom 9px;
-  }
-
-  .thead_change {
-    background-position: right 51px bottom 9px;
+    padding-bottom: 0;
   }
 
   .table_tbody_back {
-    top: 100px;
+    top: 91px;
   }
 }
 
@@ -870,11 +812,10 @@ body {
 @media (max-width: 1024px) {
   /** main */
   .main__container {
-    max-width: 984px;
-    min-width: 728px;
     width: 96%;
   }
 
+  /** spinner  */
   .spinner-border {
     width: 36px;
     height: 36px;
@@ -889,38 +830,36 @@ body {
   }
 
   /** table */
-  .thead_id,
+  .big-table {
+    overflow-x: auto;
+  }
+
+  .main__table {
+    min-width: 728px;
+  }
+
   .tbody_id {
-    width: 90px;
+    padding-right: 28px;
   }
 
-  .thead_create,
-  .thead_change {
-    padding-right: 30px;
-    width: 158px;
-  }
-
-  .thead_contacts {
-    width: 148px;
-  }
-
-  .thead_actions {
-    width: 15%;
+  .td_contacts {
+    width: 150px;
   }
 
   .last-pic {
-    margin-right: 11.5%;
+    margin-right: 35px;
+  }
+}
+
+/** MEDIA 807 */
+@media (max-width: 807px) {
+  .td_actions {
+    width: 105px;
   }
 }
 
 /** MEDIA 768 */
 @media (max-width: 768px) {
-  /** main */
-  .main__container {
-    margin: 0 20px;
-    width: 728px;
-  }
-
   /** header */
   .header__input_text,
   .header__input_search {
@@ -928,66 +867,16 @@ body {
   }
 
   /** table */
-  .thead_id,
   .tbody_id {
-    width: 80px;
+    padding-right: 18px;
   }
 
-  .thead_id {
-    background-position: left 33px bottom 14px;
-  }
-
-  .thead_full-name {
-    background-position: left 140px bottom 13px;
-  }
-
-  .thead_create {
-    background-position: right 30px bottom 9px;
-  }
-
-  .thead_change {
-    background-position: right 19px bottom 9px;
-  }
-
-  .thead_create,
-  .thead_change {
-    padding-right: 0;
-    width: 98px;
-  }
-
-  .thead_actions {
-    width: 105px;
-  }
-
-  .thead_contacts {
-    width: 128px;
+  .td_contacts {
+    width: 130px;
   }
 
   .last-pic {
-    margin-right: 10px;
-  }
-
-
-  /** table back */
-  .table_tbody_back {
-    top: 100px;
-  }
-
-
-  /* TODO: прокрутка таблицы? */
-  /** table */
-  .big-table {
-    overflow: auto;
-    position: relative;
-  }
-
-  .big-table .main__table {
-    display: inline-block;
-    vertical-align: top;
-    width: 728px;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
+    margin-right: 15px;
   }
 }
 
