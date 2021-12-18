@@ -4,7 +4,7 @@
 
 <div align="center">
   <h1>Skillbox crm</h1>
-  <p><i>Graduation project for the JS course from Skillbox.</i></p>
+  <p><i>Graduation project for the JS course from Skillbox</i></p>
 </div>
 
 ## Frontend
