@@ -14,7 +14,7 @@
    - Sorting the table
    - Create / delete / change a client
    - Validation of the form before sending it to the server  
-     **Подсвечивает красным если:**
+     **Highlights in red if:**
        - the first letter is not capitalized  
        - more than 1 capital letter   
        - less than 2 letters   
