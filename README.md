@@ -9,6 +9,7 @@
 
 ## Frontend
    - Search with auto-completion  
+      you can use your mouse click or keyboard arrow and enter  
       _to remove the border, click on the line of the selected client_
    - Sorting the table
    - Create / delete / change a client
